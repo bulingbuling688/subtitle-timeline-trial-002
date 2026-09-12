@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字幕时间轴校准工具</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>字幕时间轴校准工具</h1>
+    <p class="hint">字幕与视频均只在本地浏览器处理，不会上传到服务器。</p>
+  </header>
+
+  <section class="toolbar">
+    <label class="btn">
+      导入 SRT
+      <input type="file" id="file-input" accept=".srt" hidden>
+    </label>
+    <button id="load-sample" class="btn">载入内置示例</button>
+    <button id="export-btn" class="btn" disabled>导出 SRT</button>
+    <span class="sep"></span>
+    <button id="undo-btn" class="btn" disabled>撤销 (Ctrl+Z)</button>
+    <button id="redo-btn" class="btn" disabled>重做 (Ctrl+Shift+Z)</button>
+    <span class="sep"></span>
+    <span id="cue-count" class="muted">共 0 条</span>
+  </section>
+
+  <section class="shift-panel">
+    <strong>统一平移：</strong>
+    <input type="text" id="shift-amount" value="500" inputmode="numeric" title="非负整数，单位毫秒">
+    <span class="muted">毫秒</span>
+    <button id="shift-earlier" class="btn">◀ 提前</button>
+    <button id="shift-later" class="btn">延后 ▶</button>
+    <label><input type="radio" name="scope" id="scope-all" checked> 全部字幕</label>
+    <label><input type="radio" name="scope" id="scope-selected"> 仅选中</label>
+    <span id="overlap-info" class="overlap-info"></span>
+  </section>
+
+  <div id="message" class="message"></div>
+
+  <main>
+    <section class="video-pane">
+      <label class="btn">
+        选择本地视频
+        <input type="file" id="video-input" accept="video/*" hidden>
+      </label>
+      <div class="video-wrap">
+        <video id="video" controls></video>
+        <div id="overlay" class="overlay"></div>
+      </div>
+    </section>
+
+    <section class="table-pane">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="select-all" title="全选/全不选"></th>
+            <th>#</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>正文（支持多行）</th>
+          </tr>
+        </thead>
+        <tbody id="cue-tbody"></tbody>
+      </table>
+      <p class="muted tip">时间格式 <code>HH:MM:SS,mmm</code>（也接受 <code>.</code> 分隔毫秒）。点击行内空白处可让视频跳转到该条字幕起点。</p>
+    </section>
+  </main>
+
+  <script src="js/srt.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
